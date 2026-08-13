@@ -1,4 +1,39 @@
-🧠 RAG Knowledge AssistantA lightweight, high-performance Retrieval-Augmented Generation (RAG) application designed to ingest documents or web pages and answer context-aware questions seamlessly. Built with a FastAPI backend and a modern React + Vite frontend, powered by Groq LLM, LangChain, and FAISS.🚀 Key FeaturesMulti-Format Ingestion: Supports PDF, DOCX, TXT files, and live Webpage URLs.Smart Chunking & Embeddings: Uses Hugging Face Sentence Transformers for robust vector representations.Fast Vector Search: Powered by FAISS for rapid similarity retrieval.LLM-Powered Responses: Utilizes Groq for lightning-fast answer generation with strict grounding against hallucinations.Session-Based Chat: Maintains conversational context using unique session_id tracking.Transparent Citations: Automatically displays source documents/URLs alongside answers.🛠️ Technology StackBackendFramework: Python, FastAPI, UvicornOrchestration & RAG: LangChain, PydanticVector Store & Embeddings: FAISS, Hugging Face Sentence TransformersLLM: Groq APIFrontendLibrary: React, ViteHTTP Client: AxiosStyling: CSS📂 Project StructurePlaintextrag/
+# 🧠 RAG Knowledge Assistant
+
+A lightweight, high-performance **Retrieval-Augmented Generation (RAG)** application designed to ingest documents or web pages and answer context-aware questions seamlessly. Built with a **FastAPI** backend and a modern **React + Vite** frontend, powered by **Groq LLM**, **LangChain**, and **FAISS**.
+
+---
+
+## 🚀 Key Features
+
+* **Multi-Format Ingestion:** Supports PDF, DOCX, TXT files, and live Webpage URLs.
+* **Smart Chunking & Embeddings:** Uses Hugging Face Sentence Transformers for robust vector representations.
+* **Fast Vector Search:** Powered by FAISS for rapid similarity retrieval.
+* **LLM-Powered Responses:** Utilizes Groq for lightning-fast answer generation with strict grounding against hallucinations.
+* **Session-Based Chat:** Maintains conversational context using unique `session_id` tracking.
+* **Transparent Citations:** Automatically displays source documents/URLs alongside answers.
+
+---
+
+## 🛠️ Technology Stack
+
+### **Backend**
+* **Framework:** Python, FastAPI, Uvicorn
+* **Orchestration & RAG:** LangChain, Pydantic
+* **Vector Store & Embeddings:** FAISS, Hugging Face Sentence Transformers
+* **LLM:** Groq API
+
+### **Frontend**
+* **Library:** React, Vite
+* **HTTP Client:** Axios
+* **Styling:** CSS
+
+---
+
+## 📂 Project Structure
+
+```text
+rag/
 ├── app/
 │   ├── api/
 │   ├── embeddings/
@@ -24,9 +59,11 @@
 ├── requirements.txt
 ├── .env
 └── README.md
+
 ⚙️ Getting Started & Installation1. Backend SetupNavigate to the root directory, activate your virtual environment, and install dependencies:Bash# Activate virtual environment
 # Windows:
 .\venv\Scripts\activate
+
 # macOS/Linux:
 source venv/bin/activate
 
@@ -39,7 +76,7 @@ Create a .env file in the project root and add your Groq API key:Code snippetGRO
 npm install
 🏃‍♂️ Running the ApplicationStart the BackendFrom the project root directory:Bashuvicorn main:app --host 127.0.0.1 --port 8000 --reload
 Backend API: http://127.0.0.1:8000Swagger Documentation: http://127.0.0.1:8000/docsStart the FrontendFrom the frontend directory:Bashnpm run dev
-Frontend App: http://localhost:5173 (or check terminal for alternative Vite ports)🔌 API Endpoints ReferenceEndpointMethodRequest Payload / ParamsDescription/GETNoneHealth check endpoint/ingest/filePOSTmultipart/form-data (file)Ingests PDF, DOCX, or TXT documents/ingest/urlPOST{"url": "[https://example.com](https://example.com)"}Scrapes and ingests a webpage URL/chat/POST{"session_id": "string", "question": "string"}Submits a query and returns an LLM answer with sourcesExample Ingestion Response (POST /ingest/file)JSON{
+Frontend App: http://localhost:5173 (or check terminal for alternative Vite ports)🔌 API Endpoints ReferenceEndpointMethodRequest Payload / ParamsDescription/GETNoneHealth check endpoint/ingest/filePOSTmultipart/form-data (file)Ingests PDF, DOCX, or TXT documents/ingest/urlPOST{"url": "https://example.com"}Scrapes and ingests a webpage URL/chat/POST{"session_id": "string", "question": "string"}Submits a query and returns an LLM answer with sourcesExample Ingestion Response (POST /ingest/file)JSON{
   "message": "Document processed successfully.",
   "filename": "test.pdf",
   "chunks": 23
@@ -81,4 +118,3 @@ frontend/node_modules/
 data/uploads/
 data/faiss/
 dist/
-🚀 Future ImprovementsOCR support for scanned and image-based PDFs.Advanced retrieval techniques with cross-encoder reranking.Real-time streaming LLM responses.Persistent, multi-user knowledge base separation and authentication layers.
