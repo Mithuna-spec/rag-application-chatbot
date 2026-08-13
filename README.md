@@ -1,92 +1,4 @@
-RAG Knowledge Assistant
-
-A lightweight Retrieval-Augmented Generation (RAG) application that allows users to upload documents or provide a webpage URL and ask questions about the processed content.
-
-Overview
-
-The application supports:
-
-PDF document ingestion
-DOCX document ingestion
-TXT document ingestion
-Webpage URL ingestion
-Document chunking
-Hugging Face embeddings
-FAISS vector search
-Retrieval-Augmented Generation
-Groq LLM for answer generation
-Source display
-Session-based chat using session_id
-React frontend
-FastAPI backend
-Loading and error handling
-
-This application intentionally does not use:
-
-Database
-Authentication
-User accounts
-Technology Stack
-Backend
-Python
-FastAPI
-LangChain
-FAISS
-Hugging Face Sentence Transformers
-Groq
-Pydantic
-Uvicorn
-Frontend
-React
-Vite
-Axios
-CSS
-Vector Store
-
-FAISS
-
-LLM
-
-Groq
-
-Embeddings
-
-Hugging Face Sentence Transformers.
-
-Architecture
-Document / URL
-      ↓
-    Loader
-      ↓
- Text Extraction
-      ↓
-   Chunking
-      ↓
-  Embeddings
-      ↓
-    FAISS
-      ↓
-Similarity Retrieval
-      ↓
-Relevant Context
-      ↓
-   Groq LLM
-      ↓
-Answer + Sources
-Frontend Flow
-React
-  ↓
-Axios
-  ↓
-FastAPI
-  ↓
-RAG Pipeline
-  ↓
-Response
-  ↓
-React UI
-Project Structure
-rag/
+🧠 RAG Knowledge AssistantA lightweight, high-performance Retrieval-Augmented Generation (RAG) application designed to ingest documents or web pages and answer context-aware questions seamlessly. Built with a FastAPI backend and a modern React + Vite frontend, powered by Groq LLM, LangChain, and FAISS.🚀 Key FeaturesMulti-Format Ingestion: Supports PDF, DOCX, TXT files, and live Webpage URLs.Smart Chunking & Embeddings: Uses Hugging Face Sentence Transformers for robust vector representations.Fast Vector Search: Powered by FAISS for rapid similarity retrieval.LLM-Powered Responses: Utilizes Groq for lightning-fast answer generation with strict grounding against hallucinations.Session-Based Chat: Maintains conversational context using unique session_id tracking.Transparent Citations: Automatically displays source documents/URLs alongside answers.🛠️ Technology StackBackendFramework: Python, FastAPI, UvicornOrchestration & RAG: LangChain, PydanticVector Store & Embeddings: FAISS, Hugging Face Sentence TransformersLLM: Groq APIFrontendLibrary: React, ViteHTTP Client: AxiosStyling: CSS📂 Project StructurePlaintextrag/
 ├── app/
 │   ├── api/
 │   ├── embeddings/
@@ -96,11 +8,9 @@ rag/
 │   ├── rag/
 │   ├── retrieval/
 │   └── vectorstore/
-│
 ├── data/
 │   ├── uploads/
 │   └── faiss/
-│
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
@@ -110,217 +20,65 @@ rag/
 │   │   └── index.css
 │   ├── package.json
 │   └── vite.config.js
-│
 ├── main.py
 ├── requirements.txt
 ├── .env
 └── README.md
-Backend Setup
-
-Activate the virtual environment:
-
+⚙️ Getting Started & Installation1. Backend SetupNavigate to the root directory, activate your virtual environment, and install dependencies:Bash# Activate virtual environment
+# Windows:
 .\venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
 
-Install dependencies:
-
+# Install dependencies
 pip install -r requirements.txt
+Create a .env file in the project root and add your Groq API key:Code snippetGROQ_API_KEY=your_groq_api_key_here
+⚠️ Security Warning: Never commit your .env file to version control.2. Frontend SetupOpen a separate terminal window and navigate to the frontend directory:Bashcd frontend
 
-Create a .env file:
-
-GROQ_API_KEY=your_groq_api_key
-
-Do not commit .env to GitHub.
-
-Run Backend
-
-From the project root:
-
-uvicorn main:app --host 127.0.0.1 --port 8000
-
-Backend:
-
-http://127.0.0.1:8000
-
-Swagger API documentation:
-
-http://127.0.0.1:8000/docs
-Run Frontend
-
-Open a second terminal:
-
-cd frontend
-
-Install dependencies:
-
+# Install dependencies
 npm install
-
-Start the frontend:
-
-npm run dev
-
-Frontend:
-
-http://localhost:5173
-
-If Vite selects another port, use the URL displayed in the terminal.
-
-API Endpoints
-Health Check
-GET /
-Upload Document
-POST /ingest/file
-
-Supported formats:
-
-PDF
-DOCX
-TXT
-
-The request uses multipart/form-data with the field:
-
-file
-
-Example response:
-
-{
+🏃‍♂️ Running the ApplicationStart the BackendFrom the project root directory:Bashuvicorn main:app --host 127.0.0.1 --port 8000 --reload
+Backend API: http://127.0.0.1:8000Swagger Documentation: http://127.0.0.1:8000/docsStart the FrontendFrom the frontend directory:Bashnpm run dev
+Frontend App: http://localhost:5173 (or check terminal for alternative Vite ports)🔌 API Endpoints ReferenceEndpointMethodRequest Payload / ParamsDescription/GETNoneHealth check endpoint/ingest/filePOSTmultipart/form-data (file)Ingests PDF, DOCX, or TXT documents/ingest/urlPOST{"url": "[https://example.com](https://example.com)"}Scrapes and ingests a webpage URL/chat/POST{"session_id": "string", "question": "string"}Submits a query and returns an LLM answer with sourcesExample Ingestion Response (POST /ingest/file)JSON{
   "message": "Document processed successfully.",
   "filename": "test.pdf",
   "chunks": 23
 }
-Ingest URL
-POST /ingest/url
-
-Request:
-
-{
-  "url": "https://example.com"
-}
-Chat
-POST /chat/
-
-Request:
-
-{
-  "session_id": "unique-session-id",
-  "question": "What is this document about?"
-}
-
-Example response:
-
-{
+Example Chat Response (POST /chat/)JSON{
   "session_id": "unique-session-id",
   "question": "What is this document about?",
-  "answer": "The document is about...",
-  "sources": [
-    "data/uploads\\test.pdf"
-  ]
+  "answer": "The document details...",
+  "sources": ["data/uploads/test.pdf"]
 }
-RAG Workflow
-Ingestion
-PDF / DOCX / TXT / URL
-        ↓
-      Loader
-        ↓
-   Text Extraction
-        ↓
-      Chunking
-        ↓
-    Embeddings
-        ↓
-      FAISS
-Question Answering
-User Question
-      ↓
-Query Embedding
-      ↓
-FAISS Similarity Search
-      ↓
-Relevant Chunks
-      ↓
-Context Construction
-      ↓
-Groq LLM
-      ↓
-Answer + Sources
-How to Use
-Start the FastAPI backend.
-Start the React frontend.
-Open the frontend in your browser.
-Upload a PDF, DOCX, or TXT file, or provide a webpage URL.
-Wait for successful processing.
-Ask a question related to the processed content.
-View the generated answer.
-View the source used for the answer.
-Continue asking questions in the same session.
-Testing
-Document Ingestion
-
-Test:
-
-PDF
-DOCX
-TXT
-
-Verify that the application displays:
-
-Document processed successfully.
-
-along with the generated chunk count.
-
-URL Ingestion
-
-Provide a valid webpage URL and verify that the content is successfully processed.
-
-Relevant Question
-
-Ask a question whose answer is clearly present in the processed content.
-
-Paraphrased Question
-
-Ask the same information using different wording to test retrieval quality.
-
-Negative Question
-
-Ask a question whose answer is not present in the processed content.
-
-Expected behavior:
-
-I couldn't find that information in the provided knowledge base.
-
-The assistant should not invent information that is unavailable from the retrieved context.
-
-Error Testing
-
-Test:
-
-Empty question
-Unsupported file
-Invalid URL
-Backend unavailable
-Missing knowledge base
-Security and Git
-
-Do not commit:
-
-.env
+🔄 Architecture & WorkflowIngestion FlowPlaintextPDF / DOCX / TXT / URL 
+       ↓
+    Loader 
+       ↓
+ Text Extraction 
+       ↓
+   Chunking 
+       ↓
+   Embeddings 
+       ↓
+  FAISS Vector Store
+Question Answering FlowPlaintextUser Question 
+       ↓
+Query Embedding 
+       ↓
+FAISS Similarity Search 
+       ↓
+ Relevant Chunks 
+       ↓
+Context Construction 
+       ↓
+    Groq LLM 
+       ↓
+ Answer + Sources
+🧪 Testing GuideDocument Ingestion: Upload sample PDF, DOCX, and TXT files. Verify success messages and chunk counts.URL Ingestion: Submit a valid article or documentation URL.Relevant Questions: Ask direct questions whose answers exist in your knowledge base.Paraphrased Questions: Rephrase the same queries using alternative wording to test retrieval robustness.Negative Question Testing: Ask questions outside the scope of your uploaded content.Expected Output: "I couldn't find that information in the provided knowledge base." (The system should strictly avoid hallucination).Error Handling: Test edge cases such as empty questions, invalid URLs, unsupported file types, and queries submitted without an active knowledge base.🛡️ Security & Git Best PracticesEnsure the following patterns are included in your .gitignore to keep sensitive credentials and volatile runtime data out of source control:Code snippet.env
 venv/
 .venv/
 frontend/node_modules/
 data/uploads/
 data/faiss/
-
-The .env file contains sensitive API credentials.
-
-Runtime files and generated FAISS data should remain local unless intentionally configured otherwise.
-
-Future Improvements
-
-Possible future improvements include:
-
-OCR support for scanned/image-based PDFs
-Improved retrieval and reranking
-Streaming LLM responses
-Persistent multi-user knowledge bases
-Authentication for multi-user deployments
-
-These are future improvements and are not required for the current lightweight application.
+dist/
+🚀 Future ImprovementsOCR support for scanned and image-based PDFs.Advanced retrieval techniques with cross-encoder reranking.Real-time streaming LLM responses.Persistent, multi-user knowledge base separation and authentication layers.
