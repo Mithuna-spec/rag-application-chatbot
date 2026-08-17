@@ -89,7 +89,8 @@ def chat(request: ChatRequest):
         documents = retrieve_documents(
             vectorstore,
             request.question,
-            k=5
+            k=5,
+            chat_history=chat_history
         )
 
     except Exception as e:
