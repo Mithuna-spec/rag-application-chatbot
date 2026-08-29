@@ -330,6 +330,10 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 
 ---
 
+## Development
+
+This project is actively maintained and improved.
+
 <div align="center">
 
 Made with ❤️ using FastAPI, React, and Groq
